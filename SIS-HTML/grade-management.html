@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade Management</title>
+
+  <link rel="stylesheet" href="../CSS/grade-management.css">
+</head>
+<body>
+  <!-- Back button -->
+<a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+
+  <h1>Grade Management</h1>
+
+  <table id="gradeTable">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Course</th>
+        <th>Grade</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Reymark Regalado</td>
+        <td>Computer Engineering</td>
+        <td>85</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>John Rafael Esguerra</td>
+        <td>Computer Engineering</td>
+        <td>90</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Ashley Hangdaan</td>
+        <td>Computer-engineering</td>
+        <td>81</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Roy Perez</td>
+        <td>Computer-engineering</td>
+        <td>70</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    const cutoff = 75; // passing grade
+
+    document.querySelectorAll("#gradeTable tbody tr").forEach(row => {
+      const gradeCell = row.cells[2]; // grade column
+      const statusCell = row.cells[3]; // status column
+      const grade = parseInt(gradeCell.textContent);
+
+      if (grade >= cutoff) {
+        statusCell.textContent = "Pass";
+        statusCell.classList.add("pass");
+      } else {
+        statusCell.textContent = "Fail";
+        statusCell.classList.add("fail");
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        const backButton = document.querySelector('.back-btn');
+
+        if (loggedInUser && loggedInUser.role === 'Student' && backButton) {
+            backButton.href = 'student-dashboard.html';
+        }
+    });
+  </script>
+</body>
+</html>

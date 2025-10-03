@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Account</title>
+  <link rel="stylesheet" href="../CSS/login.css"> <!-- Reusing login.css for similar styling -->
+</head>
+<body>
+  <div class="auth-container">
+    <img src="photo/AICSlogo.png" alt="AICS Logo" class="logo">
+    <h1>Create an Account</h1>
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="role">Register as:</label>
+        <select id="role" name="role" required>
+          <option value="Student">Student</option>
+          <option value="Teacher">Teacher</option>
+        </select>
+      </div>
+      <div class="error" id="errorMsg" style="display: none;"></div>
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <a href="../index.html" class="btn btn-secondary">Back to Login</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!name || !email || !password) {
+        errorMsg.textContent = "All fields are required!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      // Get existing users from localStorage or initialize an empty array
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check if user already exists
+      const userExists = users.some(user => user.email === email);
+      if (userExists) {
+        errorMsg.textContent = "An account with this email already exists.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      // Add new user
+      users.push({ name, email, password, role });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Redirect to login page with a success message
+      alert("Registration successful! You can now log in.");
+      window.location.href = "../index.html";
+    });
+  </script>
+</body>
+</html>

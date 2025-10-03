@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Tracking</title>
+  <link rel="stylesheet" href="../CSS/attendance.css">
+
+</head>
+<body>
+  <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+  <h1>Attendance Tracking</h1>
+
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Total Days</th>
+        <th>Days Present</th>
+        <th>Days Absent</th>
+        <th>Attendance %</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>901234</td>
+        <td>Reymark Regalado</td>
+        <td>30</td>
+        <td>30</td>
+        <td>0</td>
+        <td></td>
+        <td></td>
+        <td><button class="edit-btn">Edit</button></td>
+      </tr>
+      <tr>
+        <td>789012</td>
+        <td>John Rafael Esguerra</td>
+        <td>30</td>
+        <td>20</td>
+        <td>30</td>
+        <td></td>
+        <td></td>
+        <td><button class="edit-btn">Edit</button></td>
+      </tr>
+      <tr>
+        <td>123456</td>
+        <td>Ashley Hangdaan</td>
+        <td>30</td>
+        <td>25</td>
+        <td>5</td>
+        <td></td>
+        <td></td>
+        <td><button class="edit-btn">Edit</button></td>
+      </tr>
+      <tr>
+        <td>345678</td>
+        <td>Roy Perez</td>
+        <td>30</td>
+        <td>25</td>
+        <td>5</td>
+        <td></td>
+        <td></td>
+        <td><button class="edit-btn">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    function updateAttendance(row) {
+      const total = parseInt(row.cells[2].textContent);
+      const present = parseInt(row.cells[3].textContent);
+      const absent = parseInt(row.cells[4].textContent);
+      const percentCell = row.cells[5];
+      const statusCell = row.cells[6];
+
+      const percentage = ((present / total) * 100).toFixed(1);
+
+      if (percentage < 75) {
+        percentCell.innerHTML = `<span class="low-attendance">${percentage}% ⚠️</span>`;
+      } else {
+        percentCell.textContent = percentage + "%";
+      }
+
+      if (present === total) {
+        statusCell.textContent = "Always Present";
+        statusCell.className = "status-present";
+      } else if (absent === total) {
+        statusCell.textContent = "Always Absent";
+        statusCell.className = "status-absent";
+      } else {
+        statusCell.textContent = "Partial Attendance";
+        statusCell.className = "status-partial";
+      }
+    }
+
+    const rows = document.querySelectorAll("#attendanceTable tbody tr");
+    rows.forEach(row => {
+      updateAttendance(row);
+
+      const editBtn = row.querySelector(".edit-btn");
+
+      editBtn.addEventListener("click", () => {
+        // Save original values
+        const total = row.cells[2].textContent;
+        const present = row.cells[3].textContent;
+        const absent = row.cells[4].textContent;
+
+        // Make editable
+        row.cells[2].innerHTML = `<input type="number" value="${total}" min="0">`;
+        row.cells[3].innerHTML = `<input type="number" value="${present}" min="0">`;
+        row.cells[4].innerHTML = `<input type="number" value="${absent}" min="0">`;
+
+        // Replace buttons
+        row.cells[7].innerHTML = `
+          <button class="save-btn">Save</button>
+          <button class="cancel-btn">Cancel</button>
+        `;
+
+        const saveBtn = row.querySelector(".save-btn");
+        const cancelBtn = row.querySelector(".cancel-btn");
+
+        saveBtn.addEventListener("click", () => {
+          const newTotal = parseInt(row.cells[2].querySelector("input").value);
+          const newPresent = parseInt(row.cells[3].querySelector("input").value);
+          const newAbsent = parseInt(row.cells[4].querySelector("input").value);
+
+          // Update cells
+          row.cells[2].textContent = newTotal;
+          row.cells[3].textContent = newPresent;
+          row.cells[4].textContent = newAbsent;
+
+          updateAttendance(row);
+
+          // Restore edit button
+          row.cells[7].innerHTML = `<button class="edit-btn">Edit</button>`;
+          attachEdit(row); // Reattach edit functionality
+        });
+
+        cancelBtn.addEventListener("click", () => {
+          // Restore original values
+          row.cells[2].textContent = total;
+          row.cells[3].textContent = present;
+          row.cells[4].textContent = absent;
+
+          updateAttendance(row);
+
+          // Restore edit button
+          row.cells[7].innerHTML = `<button class="edit-btn">Edit</button>`;
+          attachEdit(row); // Reattach edit functionality
+        });
+      });
+    });
+
+    function attachEdit(row) {
+      const editBtn = row.querySelector(".edit-btn");
+      if (!editBtn) return;
+      editBtn.addEventListener("click", () => {
+        editBtn.click(); // Trigger edit
+      });
+    }
+
+    saveBtn.addEventListener("click", () => {
+  let newTotal = parseInt(row.cells[2].querySelector("input").value);
+  let newPresent = parseInt(row.cells[3].querySelector("input").value);
+
+  // Auto-calculate absent
+  let newAbsent = newTotal - newPresent;
+  if(newAbsent < 0) newAbsent = 0; // prevent negative
+
+  row.cells[2].textContent = newTotal;
+  row.cells[3].textContent = newPresent;
+  row.cells[4].textContent = newAbsent;
+
+  updateAttendance(row);
+
+  row.cells[7].innerHTML = `<button class="edit-btn">Edit</button>`;
+  attachEdit(row);
+});
+
+// Load data
+fetch("get_attendance.php")
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.querySelector("#attendanceTable tbody");
+    tbody.innerHTML = "";
+    data.forEach(student => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${student.student_id}</td>
+        <td>${student.name}</td>
+        <td>${student.total_days}</td>
+        <td>${student.days_present}</td>
+        <td>${student.days_absent}</td>
+        <td></td>
+        <td></td>
+        <td><button class="edit-btn">Edit</button></td>
+      `;
+      tbody.appendChild(tr);
+      updateAttendance(tr);
+      attachEdit(tr);
+    });
+  });
+
+// Save updated attendance
+function saveToDB(studentId, total, present, absent) {
+  fetch("update_attendance.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `student_id=${studentId}&total_days=${total}&days_present=${present}&days_absent=${absent}`
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.status === "success") console.log("Saved!");
+  });
+}
+
+// Inside your save button click handler:
+saveBtn.addEventListener("click", () => {
+  const newTotal = parseInt(row.cells[2].querySelector("input").value);
+  const newPresent = parseInt(row.cells[3].querySelector("input").value);
+  const newAbsent = newTotal - newPresent;
+  
+  row.cells[2].textContent = newTotal;
+  row.cells[3].textContent = newPresent;
+  row.cells[4].textContent = newAbsent;
+  updateAttendance(row);
+  row.cells[7].innerHTML = `<button class="edit-btn">Edit</button>`;
+  attachEdit(row);
+
+  const studentId = row.cells[0].textContent;
+  saveToDB(studentId, newTotal, newPresent, newAbsent);
+});
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        const backButton = document.querySelector('.back-btn');
+
+        if (loggedInUser && loggedInUser.role === 'Student' && backButton) {
+            backButton.href = 'student-dashboard.html';
+        }
+    });
+
+  </script>
+</body>
+</html>

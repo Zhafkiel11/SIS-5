@@ -1,0 +1,126 @@
+ /* Page background */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #cce7ff, #99d6ff); /* light blue gradient */
+    }
+
+    /* Container animation */
+    .auth-container {
+      width: 380px;
+      padding: 30px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: #333;
+      animation: fadeInUp 1s forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+      border-radius: 50%;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #004085;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+      color: #004085;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #99c2ff;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #4da3ff;
+      box-shadow: 0 0 6px #99cfff;
+    }
+
+    /* Button group in row */
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      opacity: 0.9;
+    }
+
+    /* Error message */
+    .error {
+      color: #721c24;
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 8px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 13px;
+      display: none;
+    }

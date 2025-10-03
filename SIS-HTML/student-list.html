@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+
+    <div class="page-container">
+        <header class="list-header">
+            <div class="search-sort-group">
+                <label for="search">Search:</label>
+                <input type="search" id="search" placeholder="Search students...">
+            </div>
+            <div class="search-sort-group">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option>Last Name</option>
+                    <option>Course</option>
+                    <option>ID</option>
+                </select>
+            </div>
+        </header>
+
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>123456</td>
+                    <td>Hangdaan</td>
+                    <td>Ashley</td>
+                    <td>COMPUTER ENGINEERING</td>
+                    <td>ENROLLED</td>
+                    <td><a href="student-form.html" class="btn btn-secondary">Update</a></td>
+                </tr>
+                <tr>
+                    <td>789012</td>
+                    <td>John Rafael</td>
+                    <td>Esguerra</td>
+                    <td>COMPUTER SCIENCE</td>
+                    <td>ENROLLED</td>
+                    <td><a href="student-form.html" class="btn btn-secondary">Update</a></td>
+                </tr>
+                <tr>
+                    <td>345678</td>
+                    <td>Roy Quintin</td>
+                    <td>Perez</td>
+                    <td>ENTREPRENEUR</td>
+                    <td>NOT ENROLLED</td>
+                    <td><a href="student-form.html" class="btn btn-secondary">Update</a></td>
+                </tr>
+                 <tr>
+                    <td>901234</td>
+                    <td>Reymark</td>
+                    <td>Regalado</td>
+                    <td>COMPUTER SCIENCE</td>
+                    <td>ENROLLED</td>
+                    <td><a href="student-form.html" class="btn btn-secondary">Update</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="list-footer">
+            <button class="btn btn-success">Export to CSV</button>
+            <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+            // Find the dashboard link
+            const dashboardLink = document.querySelector('a[href="dashboard.html"]');
+            if (loggedInUser && loggedInUser.role === 'Student' && dashboardLink) {
+                dashboardLink.href = 'student-dashboard.html';
+            }
+
+            // If the user is a student, hide the actions column
+            if (loggedInUser && loggedInUser.role === 'Student') {
+                const table = document.querySelector('.student-table');
+                
+                // Hide the header
+                const headerCells = table.querySelectorAll('thead th');
+                if (headerCells.length > 5) {
+                    headerCells[5].style.display = 'none';
+                }
+
+                // Hide the cell in each body row
+                const bodyRows = table.querySelectorAll('tbody tr');
+                bodyRows.forEach(row => {
+                    if (row.cells.length > 5) {
+                        row.cells[5].style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="../CSS/about.css">
+</head>
+<body>
+    <div class="about-container">
+        <header class="about-header">
+            <img src="photo/about.png" alt="About Icon">
+            <h1>About the Developers</h1>
+        </header>
+        
+        <main class="info-grid">
+            <div class="label">Project:</div>
+            <div>Student Information System (SIS)</div>
+
+            <div class="label">Version:</div>
+            <div>1.0.0</div>
+
+            <div class="label">Lead Developer:</div>
+            <div>Hangdaan Ashley</div>
+
+            <div class="label">UI/UX Designer:</div>
+            <div>Esguerra John Rafael</div>
+
+            <div class="label">Other Members:</div>
+            <div>Perez Roy Quintin & Regalado Reymark</div>
+            
+            <div class="label">Contact Email:</div>
+            <div>contact@sisproject.com</div>
+
+            <div class="label">Website:</div>
+            <div>www.sisproject.com</div>
+        </main>
+
+        <footer class="about-footer">
+            <a href="dashboard.html" class="btn btn-primary">Close</a>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            const closeButton = document.querySelector('.about-footer a.btn-primary');
+
+            if (loggedInUser && loggedInUser.role === 'Student' && closeButton) {
+                closeButton.href = 'student-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <link rel="stylesheet" href="../CSS/student-form.css">
+    <style>
+        /* Fix for name inputs overlapping */
+        .name-group {
+            display: flex;
+            gap: 10px; /* Adds space between the input fields */
+        }
+        .name-group input {
+            flex: 1; /* Allows each input to grow and fill the space */
+        }
+        /* Ensure form groups within the grid layout behave correctly */
+        fieldset .grid-form > .form-group {
+            min-width: 0; /* Prevents content from pushing grid items wider than their allocated space */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <header class="form-header">
+            <h1>Student Information</h1>
+            <div class="photo-uploader">ADD PHOTO</div>
+        </header>
+
+        <form action="student-list.html">
+            <div class="form-group full-width">
+                <label for="student-id">STUDENT ID</label>
+                <input type="text" id="student-id" placeholder="ex. 123456">
+            </div>
+            <div class="form-group full-width">
+                 <label>Full Name</label>
+                 <div class="name-group">
+                    <input type="text" placeholder="First">
+                    <input type="text" placeholder="Middle">
+                    <input type="text" placeholder="Last">
+                </div>
+            </div>
+
+            <fieldset>
+                <legend>Personal Information</legend>
+                <div class="grid-form">
+                    <div class="form-group"><label>Age</label><input type="number"></div>
+                    <div class="form-group"><label>Sex</label><select><option>MALE</option><option>FEMALE</option></select></div>
+                    <div class="form-group"><label>Birthday</label><input type="text" placeholder="YYYY-MM-DD"></div>
+                    <div class="form-group"><label>Contact Number</label><input type="tel"></div>
+                    <div class="form-group"><label>Religion</label><input type="text"></div>
+                    <div class="form-group"><label>Address</label><input type="text"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Academic Information</legend>
+                <div class="grid-form">
+                     <div class="form-group"><label>Course</label><select><option>COMPUTER ENGINEERING</option><option>COMPUTER SCIENCE</option><option>ENTREPRENEUR</option></select></div>
+                     <div class="form-group"><label>Enrollment Status</label><select><option>ENROLLED</option><option>NOT ENROLLED</option></select></div>
+                     <div class="form-group full-width"><label>Last School Year</label><input type="text"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                 <legend>Parent/Guardian Information</legend>
+                 <div class="grid-form">
+                    <div class="form-group"><label>Name of Parent</label><input type="text"></div>
+                    <div class="form-group"><label>Contact No. of Parent</label><input type="tel"></div>
+                 </div>
+            </fieldset>
+
+            <div class="form-footer button-group">
+                <button type="submit" class="btn btn-primary">Save Student</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+                <a href="index.html" class="btn btn-danger">Close</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            const closeButton = document.querySelector('.form-footer a.btn-danger');
+
+            if (loggedInUser && loggedInUser.role === 'Student' && closeButton) {
+                closeButton.href = 'student-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

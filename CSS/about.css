@@ -1,0 +1,77 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    padding: 20px;
+    color: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.about-container {
+    width: 90%;
+    max-width: 700px;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.about-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #1e3a8a;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.about-header img {
+    width: 40px;
+    height: 40px;
+}
+
+.about-header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px 20px;
+    font-size: 16px;
+    align-items: center;
+}
+
+.info-grid .label {
+    font-weight: 600;
+    color: #475569;
+    text-align: right;
+}
+
+.about-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Re-using button styles from the main theme for consistency */
+.btn {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.btn-primary { background-color: #4682B4; }
+.btn-primary:hover { background-color: #3a6a92; transform: translateY(-2px); }

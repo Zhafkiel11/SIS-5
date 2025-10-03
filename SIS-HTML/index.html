@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login</title>
+  <link rel="stylesheet" href="CSS/login.css">
+  
+</head>
+<body>
+  <div class="auth-container">
+    <img src="photo/AICSlogo.png" alt="AICS Logo" class="logo">
+    <h1>Student Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="admin@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="123456" required>
+      </div>
+      <div class="error" id="errorMsg">Invalid email or password!</div>
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a href="../register.html" class="btn btn-secondary">Register</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // prevent page reload
+
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value.trim();
+      let errorMsg = document.getElementById("errorMsg");
+      
+      // 1. Get users from localStorage
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      
+      // 2. Find a user with matching email and password
+      const foundUser = users.find(user => user.email === email && user.password === password);
+      
+      // 3. Check if a user was found
+      if (foundUser) {
+        // Save the logged-in user's info for other pages to use
+        localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
+        
+        // Redirect based on role
+        if (foundUser.role === 'Student') {
+          window.location.href = "../student-dashboard.html"; // Redirect students to their dashboard
+        } else {
+          window.location.href = "../dashboard.html"; // Redirect admins/teachers to the main dashboard
+        }
+
+      } else {
+        // If no user found, show an error
+        errorMsg.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

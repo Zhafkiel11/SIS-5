@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIS Dashboard</title>
+  <link rel="stylesheet" href="../CSS/dashboard.css">
+
+
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="account-info">
+        <img src="photo\Profile.png" alt="Profile" class="profile-pic">
+        <div class="account-details">
+          <span class="account-name" id="accountName">Student Name</span>
+          <span class="account-role" id="accountRole">Student</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+         <div class="submenu">
+      <a href="#" class="submenu-toggle">
+        <img src="photo/student.png"><span>Courses ▾</span>
+      </a>
+      <div class="submenu-items">
+        <a href="computer-engineering.html"><span>Computer Engineering</span></a>
+        <a href="computer-science.html"><span>Computer Science</span></a>
+        <a href="entrepreneurship.html"><span>Entrepreneurship</span></a>
+      </div>
+    </div>
+
+        <a href="attendance.html"><img src="photo/user-check.png"><span>Attendance Tracking</span></a>
+        <a href="grade-management.html"><img src="photo/grade.png"><span>Grade Management</span></a>
+        <a href="#"><img src="photo/calendar.png"><span>Scheduling & Timetable</span></a>
+        <a href="#"><img src="photo/analytics.png"><span>Reporting & Analytics</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <nav class="sidebar-nav">
+          <a href="../index.html"><img src="photo/log-out.png"><span>Log Out</span></a>
+        </nav>
+      </div>
+      
+      
+    </aside>
+    <!-- Main Content -->
+    <div class="main-content-wrapper">
+      <header class="dashboard-header">
+        <div class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </div>
+        <div style="display:flex; align-items:center;">
+          <img src="photo/AICSlogo.png" class="logo">
+          <div class="title-group">
+            <h1>Student Information System</h1>
+            <p>Student Dashboard</p>
+          </div>
+        </div>
+        <!-- Right header buttons -->
+        <div class="header-actions">
+          <div class="notification-btn" id="notificationBtn">
+            <img src="photo/bell.png" alt="Notifications">
+            <span class="badge">3</span>
+          </div>
+          <div class="settings-btn" id="settingsBtn">
+            <img src="photo/setting.png" alt="Settings">
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="dashboard-grid">
+          <a href="student-list.html" class="dashboard-card"><img src="photo/search.png"><p>See Information</p></a>
+          <a href="about.html" class="dashboard-card"><img src="photo/about.png"><p>About Us</p></a>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Right Sidebar (Notifications) -->
+  <aside class="right-sidebar" id="rightSidebar">
+    <header>
+      Notifications
+      <button id="clearNotifications" style="background:red;color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;">Clear All</button>
+    </header>
+    <ul id="notificationList">
+      <li>New student registered</li>
+      <li>System update available</li>
+      <li>3 students submitted forms</li>
+    </ul>
+  </aside>
+
+  <!-- Right Sidebar (Settings) -->
+ <!-- Right Sidebar (Settings) -->
+<aside class="right-sidebar" id="settingsSidebar">
+  <header>Settings</header>
+  <ul>
+    <li>
+      <label>
+        <input type="radio" name="theme" value="light"> Light Mode
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="radio" name="theme" value="dark"> Dark Mode
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="radio" name="theme" value="auto"> Auto (System)
+      </label>
+    </li>
+  </ul>
+</aside>
+
+  <script>
+  const hamburger = document.getElementById("hamburger");
+  const sidebar = document.getElementById("sidebar");
+  const notificationBtn = document.getElementById("notificationBtn");
+  const rightSidebar = document.getElementById("rightSidebar");
+  const clearNotifications = document.getElementById("clearNotifications");
+  const notificationList = document.getElementById("notificationList");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const settingsSidebar = document.getElementById("settingsSidebar");
+
+  // Populate user info on load
+  document.addEventListener("DOMContentLoaded", () => {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (loggedInUser) {
+      document.getElementById("accountName").textContent = loggedInUser.name;
+      document.getElementById("accountRole").textContent = loggedInUser.role;
+    } else {
+      // Optional: Redirect to login if no user is found
+      window.location.href = '../index.html';
+    }
+  });
+  // Left sidebar toggle
+  hamburger.addEventListener("click", () => {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.toggle("active");
+    } else {
+      sidebar.classList.toggle("collapsed");
+    }
+  });
+
+  // Notifications toggle
+  notificationBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    rightSidebar.classList.toggle("active");
+    settingsSidebar.classList.remove("active");
+  });
+
+  // Settings toggle
+  settingsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    settingsSidebar.classList.toggle("active");
+    settingsBtn.classList.toggle("active");
+    rightSidebar.classList.remove("active");
+  });
+
+  // Close sidebars when clicking outside
+  document.addEventListener("click", (e) => {
+    // Right sidebars
+    if (!rightSidebar.contains(e.target) && !notificationBtn.contains(e.target)) {
+      rightSidebar.classList.remove("active");
+    }
+    if (!settingsSidebar.contains(e.target) && !settingsBtn.contains(e.target)) {
+      settingsSidebar.classList.remove("active");
+      settingsBtn.classList.remove("active");
+    }
+    // Left sidebar (on mobile)
+    if (sidebar.classList.contains("active") && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+      sidebar.classList.remove("active");
+    }
+  });
+
+  // Clear notifications
+  clearNotifications.addEventListener("click", () => {
+    notificationList.innerHTML = "<li style='text-align:center; color:gray;'>No notifications</li>";
+    const badge = notificationBtn.querySelector(".badge");
+    if (badge) badge.textContent = "0";
+  });
+
+  // Theme switch
+function setTheme(mode) {
+  if (mode === "auto") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.body.classList.toggle("dark", prefersDark);
+  } else {
+    document.body.classList.toggle("dark", mode === "dark");
+  }
+
+  localStorage.setItem("theme", mode);
+
+  // update radios
+  document.querySelectorAll("input[name='theme']").forEach(radio => {
+    radio.checked = (radio.value === mode);
+  });
+}
+
+// Listen to system theme changes if auto mode
+function watchSystemTheme() {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", () => {
+    if (localStorage.getItem("theme") === "auto") {
+      setTheme("auto");
+    }
+  });
+}
+watchSystemTheme();
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+setTheme(savedTheme);
+
+// Theme selection listener
+document.querySelectorAll("input[name='theme']").forEach(radio => {
+  radio.addEventListener("change", (e) => {
+    setTheme(e.target.value);
+  });
+});
+
+// Submenu toggle
+document.querySelectorAll(".submenu-toggle").forEach(toggle => {
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const parent = toggle.parentElement;
+    parent.classList.toggle("open");
+  });
+});
+
+  </script>
+</body>
+</html>
